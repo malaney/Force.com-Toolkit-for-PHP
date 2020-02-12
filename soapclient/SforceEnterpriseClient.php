@@ -38,7 +38,7 @@ require_once ('SforceBaseClient.php');
 class SforceEnterpriseClient extends SforceBaseClient {
   const ENTERPRISE_NAMESPACE = 'urn:enterprise.soap.sforce.com';
 
-  function SforceEnterpriseClient() {
+  public function __construct() {
     $this->namespace = self::ENTERPRISE_NAMESPACE;
   }
 
@@ -50,7 +50,7 @@ class SforceEnterpriseClient extends SforceBaseClient {
    * @return SaveResult
    */
   public function create($sObjects, $type) {
-    foreach ($sObjects as &$sObject) {
+    foreach ($sObjects as $sObject) {
     	// FIX for fieldsToNull issue - allow array in fieldsToNull (STEP #1)
    		$xmlStr = '';
     	if(isset($sObject->fieldsToNull) && is_array($sObject->fieldsToNull)) {
@@ -82,7 +82,7 @@ class SforceEnterpriseClient extends SforceBaseClient {
    */
   public function update($sObjects, $type, $assignment_header = NULL, $mru_header = NULL) {
 
-    foreach ($sObjects as &$sObject) {
+    foreach ($sObjects as $sObject) {
 
     	// FIX for fieldsToNull issue - allow array in fieldsToNull (STEP #1)
    		$xmlStr = '';

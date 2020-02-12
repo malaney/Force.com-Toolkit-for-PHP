@@ -628,7 +628,7 @@ class SforceBaseClient {
 	 */
 	public function processSubmitRequest($processRequestArray) {
 		if (is_array($processRequestArray)) {
-			foreach ($processRequestArray as &$process) {
+			foreach ($processRequestArray as $process) {
 				$process = new SoapVar($process, SOAP_ENC_OBJECT, 'ProcessSubmitRequest', $this->namespace);
 			}
 			$arg = new stdClass();
@@ -648,7 +648,7 @@ class SforceBaseClient {
 	 */
 	public function processWorkitemRequest($processRequestArray) {
 		if (is_array($processRequestArray)) {
-			foreach ($processRequestArray as &$process) {
+			foreach ($processRequestArray as $process) {
 				$process = new SoapVar($process, SOAP_ENC_OBJECT, 'ProcessWorkitemRequest', $this->namespace);
 			}
 			$arg = new stdClass();
@@ -1185,7 +1185,7 @@ class SObject {
 		$opened_tags = array();
 		$arr = array();
 
-		$current = &$xml_array;
+		$current = $xml_array;
 
 		//Go through the tags.
 		foreach($xml_values as $data) {
@@ -1229,11 +1229,11 @@ class SObject {
 
 			//See tag status and do the needed.
 			if($type == "open") {//The starting of the tag '<tag>'
-				$parent[$level-1] = &$current;
+				$parent[$level-1] = $current;
 
 				if(!is_array($current) or (!in_array($tag, array_keys($current)))) { //Insert New tag
 					$current[$tag] = $result;
-					$current = &$current[$tag];
+					$current = $current[$tag];
 
 				} else { //There was another element with the same tag name
 					if(isset($current[$tag][0])) {
@@ -1242,7 +1242,7 @@ class SObject {
 						$current[$tag] = array($current[$tag],$result);
 					}
 					$last = count($current[$tag]) - 1;
-					$current = &$current[$tag][$last];
+					$current = $current[$tag][$last];
 				}
 
 			} elseif($type == "complete") { //Tags that ends in 1 line '<tag />'
@@ -1260,7 +1260,7 @@ class SObject {
 				}
 
 			} elseif($type == 'close') { //End of tag '</tag>'
-				$current = &$parent[$level-1];
+				$current = $parent[$level-1];
 			}
 		}
 
